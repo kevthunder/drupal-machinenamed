@@ -1,0 +1,28 @@
+<?php
+
+/**
+ * @file machinenamed_customblock.module
+ * Main file for the machinenamed_customblock module.
+ *
+ */
+function machinenamed_customblock_load($name){
+  $block = db_query("SELECT * FROM {block_custom} WHERE machine_name = :machine_name", array(':machine_name' => $name))->fetchAssoc();
+  return $block;
+}
+ 
+/**
+ * Implementation of hook_preprocess_block().
+ */
+function machinenamed_customblock_preprocess_block(&$variables) {
+  if ($variables['block']->module == 'block' && !empty($variables['block']->delta)) {
+    // do something for this block
+    $block = block_custom_block_get($variables['block']->delta);
+    if(!empty($block['machine_name'])){
+      $variables['machinenamed_customblock'] = $block['machine_name'];
+      $variables['theme_hook_suggestions'][] = 'block__block__'.$block['machine_name'];
+      $variables['classes_array'][] = 'block-block-'.str_replace('_','-',$block['machine_name']);
+      // dpm($block);
+      // dpm($variables);
+    }
+  }
+}

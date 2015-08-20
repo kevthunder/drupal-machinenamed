@@ -1,0 +1,9 @@
+<?php
+  $renameVersion = '0.1.0';
+  $template = 'my_blank_module';
+  $templateVersion = '0.0.1';
+  $choices = array (
+    'title' => 'Machine Named',
+    'description' => 'Collection of modules that add machine names to many of Drupal DB tables',
+  );
+?>

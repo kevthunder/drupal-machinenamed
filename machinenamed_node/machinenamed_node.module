@@ -1,0 +1,46 @@
+<?php
+
+/**
+ * @file machinenamed_node.module
+ * Main file for the machinenamed_node module.
+ *
+ */
+function machinenamed_node_load($name){
+  return node_load(machinenamed_node_nid($name));
+}
+function machinenamed_node_nid($name,$language=null){
+  if(is_null($language)){
+    $language = $GLOBALS['language']->language;
+  }
+  $block = db_query("SELECT nid FROM {node} WHERE machine_name = :machine_name ORDER BY language = :language DESC", array(':machine_name' => $name, ':language' => $language))->fetchAssoc();
+  return $block['nid'];
+}
+function machinenamed_translated_node_nid($name,$language=null){
+  if(is_null($language)){
+    $language = $GLOBALS['language']->language;
+  }
+  $block = db_query("SELECT nid FROM {node} WHERE machine_name = :machine_name AND language = :language", array(':machine_name' => $name, ':language' => $language))->fetchAssoc();
+  return $block['nid'];
+}
+function machinenamed_translated_node_nids($name,$language=null){
+  if(is_null($language)){
+    $language = $GLOBALS['language']->language;
+  }
+  $def = language_default()->language;
+  $results = db_query("SELECT nid, language FROM {node} WHERE machine_name = :machine_name ORDER BY language = :language DESC, language = :def_lang DESC", array(':machine_name' => $name, ':language' => $language,':def_lang' => $def));
+  $ids = array();
+  while($res = $results->fetchAssoc()){
+    $ids[$res['language']] = $res['nid'];
+  }
+  return $ids;
+}
+ 
+/**
+ * Implementation of hook_preprocess_node().
+ */
+function machinenamed_node_preprocess_node(&$variables) {
+  if(!empty($variables['node']->machine_name)){
+    $variables['theme_hook_suggestions'][] = 'node__'.$variables['node']->machine_name;
+    $variables['classes_array'][] = 'node-'.str_replace('_','-',$variables['node']->machine_name);
+  }
+}

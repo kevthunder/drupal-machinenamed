@@ -1,0 +1,25 @@
+<?php
+
+/**
+ * @file
+ * Installation file for the machinenamed module.
+ */
+
+/**
+ * Implementation of hook_install().
+ */
+function machinenamed_install() {
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function machinenamed_uninstall() {
+}
+
+/**
+ * Implementation of hook_schema_alter().
+ */
+function machinenamed_schema_alter(&$schema) {
+}
+

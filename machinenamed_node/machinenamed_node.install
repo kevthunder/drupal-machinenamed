@@ -1,0 +1,43 @@
+<?php
+
+/**
+ * @file
+ * Installation file for the machinenamed_node module.
+ */
+
+/**
+ * Implementation of hook_install().
+ */
+function machinenamed_node_install() {
+	foreach(machinenamed_node_added_fields() as $field => $opt){
+		db_add_field('node', $field, array_diff_key($opt,array_flip(array('description'))));
+	}
+  db_add_unique_key('node', 'machine_name', array('machine_name','language'));
+}
+
+
+function machinenamed_node_added_fields() {
+	return array('machine_name'=>array(
+		'description' => 'Unique name',
+    'type' => 'varchar',
+    'length' => 128,
+    'not null' => false,
+	));
+}
+
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function machinenamed_node_uninstall() {
+	foreach(machinenamed_node_added_fields() as $field => $opt){
+		db_drop_field('node', $field);
+	}
+}
+
+/**
+ * Implementation of hook_schema_alter().
+ */
+function machinenamed_node_schema_alter(&$schema) {
+	$schema['node']['fields'] = array_merge($schema['node']['fields'],machinenamed_node_added_fields());
+}

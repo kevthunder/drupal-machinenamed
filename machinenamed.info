@@ -1,0 +1,7 @@
+name = Machine Named
+description = Collection of modules that add machine names to many of Drupal DB tables
+core = 7.x
+files[] = machinenamed.module
+files[] = machinenamed.install
+
+

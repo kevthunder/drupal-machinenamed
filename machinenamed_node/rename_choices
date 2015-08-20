@@ -1,0 +1,7 @@
+<?php
+  $renameVersion = '0.1.0';
+  $template = 'machinenamed_customblock';
+  $templateVersion = '0.0.1';
+  $choices = array (
+  );
+?>

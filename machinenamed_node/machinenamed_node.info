@@ -1,0 +1,7 @@
+name = Machine Named Nodes
+description = Machine Named Nodes
+core = 7.x
+files[] = machinenamed_node.module
+files[] = machinenamed_node.install
+
+

@@ -1,0 +1,43 @@
+<?php
+
+/**
+ * @file
+ * Installation file for the machinenamed_customblock module.
+ */
+
+/**
+ * Implementation of hook_install().
+ */
+function machinenamed_customblock_install() {
+	foreach(machinenamed_customblock_added_fields() as $field => $opt){
+		db_add_field('block_custom', $field, array_diff_key($opt,array_flip(array('description'))));
+	}
+  db_add_unique_key('block_custom', 'machine_name', array('machine_name'));
+}
+
+
+function machinenamed_customblock_added_fields() {
+	return array('machine_name'=>array(
+		'description' => 'Unique name',
+    'type' => 'varchar',
+    'length' => 128,
+    'not null' => false,
+	));
+}
+
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function machinenamed_customblock_uninstall() {
+	foreach(machinenamed_customblock_added_fields() as $field => $opt){
+		db_drop_field('block_custom', $field);
+	}
+}
+
+/**
+ * Implementation of hook_schema_alter().
+ */
+function machinenamed_customblock_schema_alter(&$schema) {
+	$schema['block_custom']['fields'] = array_merge($schema['block_custom']['fields'],machinenamed_customblock_added_fields());
+}

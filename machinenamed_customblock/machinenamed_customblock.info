@@ -1,0 +1,7 @@
+name = Named custom block
+description = Named custom block
+core = 7.x
+files[] = machinenamed_customblock.module
+files[] = machinenamed_customblock.install
+
+
